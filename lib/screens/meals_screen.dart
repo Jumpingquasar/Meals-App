@@ -4,15 +4,15 @@ import 'package:mealsapp/models/meal.dart';
 import 'package:mealsapp/widgets/meal_item.dart';
 
 class MealsScreen extends StatelessWidget {
-  const MealsScreen({super.key, required this.category, required this.meals});
+  const MealsScreen({super.key, this.category, required this.meals});
 
-  final Category category;
+  final Category? category;
   final List<Meal> meals;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(category.title)),
+      appBar: AppBar(title: Text(category != null ? category!.title : 'Your Favorites')),
       body: meals.isNotEmpty
           ? ListView.builder(
               itemCount: meals.length,
