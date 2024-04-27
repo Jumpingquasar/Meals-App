@@ -30,9 +30,20 @@ class MealScreen extends ConsumerWidget {
                   _showInfoMessage(context, 'Added meal to favorites.');
                 }
               },
-              icon: Icon(
-                Icons.star,
-                color: isFavorite ? Colors.yellow : Colors.white,
+              icon: AnimatedSwitcher(
+                duration: Durations.long3,
+                transitionBuilder: (child, animation) {
+                  return RotationTransition(
+                      turns: Tween(begin: 0.0, end: 1.0).animate(
+                        CurvedAnimation(parent: animation, curve: Curves.easeIn),
+                      ),
+                      child: child);
+                },
+                child: Icon(
+                  isFavorite ? Icons.star : Icons.star_border,
+                  color: isFavorite ? Colors.yellow : Colors.white,
+                  key: ValueKey(isFavorite),
+                ),
               ))
         ],
       ),
@@ -40,12 +51,15 @@ class MealScreen extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            FadeInImage(
-              placeholder: MemoryImage(kTransparentImage),
-              image: NetworkImage(meal.imageUrl),
-              fit: BoxFit.cover,
-              height: 220,
-              width: double.infinity,
+            Hero(
+              tag: meal.id,
+              child: FadeInImage(
+                placeholder: MemoryImage(kTransparentImage),
+                image: NetworkImage(meal.imageUrl),
+                fit: BoxFit.cover,
+                height: 220,
+                width: double.infinity,
+              ),
             ),
             const SizedBox(height: 8),
             Padding(
